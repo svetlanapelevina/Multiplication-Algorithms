@@ -2,28 +2,14 @@
 #include <fstream>
 #include "Number.h"
 #include "Multiplicator.h"
-//#include <Python.h>
 
 vector<double*> performCalculation(int k);
 void outputCsv(vector<double*>);
 
+
 int main()
 {
-    /*
-    Number m = Multiplicator::generateRandomNumber(20);
-    Number n = Multiplicator::generateRandomNumber(20);
-
-    
-    Number k = Multiplicator::karatsubaAlgorithm(*m, *n);
-    cout << "\n";
-    k.print();
-    
-    cout << Multiplicator::gradeSchoolAlgorithm(m, n) << endl;
-
-    cout << Multiplicator::karatsubaAlgorithmTime(m, n) << endl;
-    */
-    vector<double*> results = performCalculation(7);
-
+    vector<double*> results = performCalculation(10);
     outputCsv(results);
 }
 
@@ -38,7 +24,7 @@ vector<double*> performCalculation(int k)
         {
             Number m = Multiplicator::generateRandomNumber(i);
             Number n = Multiplicator::generateRandomNumber(i);
-            time1 += Multiplicator::gradeSchoolAlgorithm(m, n);
+            time1 += Multiplicator::gradeSchoolAlgorithmTime(m, n);
             time2 += Multiplicator::karatsubaAlgorithmTime(m, n);
         }
         result.push_back(new double[2]{ time1 / 3, time2 / 3 });
@@ -49,8 +35,8 @@ vector<double*> performCalculation(int k)
 void outputCsv(vector<double*> values)
 {
     ofstream file;
-    file.open("results_of_algorithms.csv");
-    file << "index" << "," << "first" << "," << "second" << "\n";
+    file.open("results_of_algorithms2.csv");
+    file << "Index" << "," << "Grand School Algorithm" << "," << "Karatsuba Algprothm" << "\n";
     for (int i = 0; i < values.size(); i++)
     {
         cout << values[i][0] << endl;

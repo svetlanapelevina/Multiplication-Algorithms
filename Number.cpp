@@ -2,22 +2,15 @@
 #include <algorithm>
 #include "Number.h"
 
-// add getDigit
-// setDigit
-
-
 using namespace std;
 
-Number::Number()
-{
-
-}
+Number::Number() {}
 
 Number::Number(string str)
 {
-	for (int i = str.length()-1; i >= 0; i--)
+	for (int i = str.length() - 1; i >= 0; i--)
 	{
-		digits.push_back(int(str[i] - '0'));
+		digits += str[i];
 	}
 }
 
@@ -25,114 +18,129 @@ Number::Number(int num)
 {
 	while (num > 0)
 	{
-		digits.push_back(num % BASE);
+		digits += to_string(num % BASE);
 		num = num / BASE;
 	}
 }
 
+int Number::getSize()
+{
+	return digits.length();
+}
+
+int Number::getDigit(int index)
+{
+	return digits[index] - '0';
+}
+
+void Number::setDigit(int index, int value)
+{
+	digits[index] = (char)(value + '0');
+}
+
+void Number::addDigit(int digit)
+{
+	digits += to_string(digit);
+}
+
+void Number::addDigitToIndex(int digit, int index)
+{
+	digits.insert(index, to_string(digit));
+}
+
+void Number::removeDigit()
+{
+	digits.pop_back();
+}
+
 Number Number::operator+(Number secondNumber)
 {
-	Number result;
+	string result;
 
-	if (digits.size() == 0 || secondNumber.digits.size() == 0) return Number(0);
+	if (digits.size() == 0) return secondNumber;
+	if (secondNumber.digits.size() == 0) return *this;
 
 	int maxSize = max(secondNumber.digits.size(), digits.size());
 
-	if (maxSize == 1) return digits[0] + secondNumber.digits[0];
+	while (secondNumber.digits.length() < maxSize)
+		secondNumber.addDigit(0);
 
-	for (int i = 0; i < maxSize + 2; i++)
-		result.digits.push_back(0);
+	while (digits.size() < maxSize)
+		this->addDigit(0);
 
 	int carry = 0;
-	for (size_t i = 0; i < maxSize || carry != 0; i++)
+	for (int i = 0; i < maxSize; i++)
 	{
-		if (i == digits.size())
-		{
-			for (size_t j = digits.size(); j < secondNumber.digits.size(); j++)
-			{
-				result.digits[j] = (secondNumber.digits[j] + carry) % BASE;
-			}
-			break;
-		}
-		else if (i == secondNumber.digits.size())
-		{
-			for (size_t j = secondNumber.digits.size(); j < digits.size(); j++)
-			{
-				result.digits[j] = (digits[j] + carry) % BASE;
-				carry = (digits[j] + carry) / BASE;
-			}
-			break;
-		}
-		else {
-			result.digits[i] = (digits[i] + secondNumber.digits[i] + carry) % BASE;
-			carry = (digits[i] + secondNumber.digits[i] + carry) / BASE;
-		}
+		int sum = ((digits[i] - '0') + (secondNumber.digits[i] - '0') + carry);
+		result += to_string(sum % BASE);
+		carry = sum / BASE;
 	}
 
-	// remove '0' from the begin
-	while (result.digits.size() > 1 && result.digits[result.digits.size() - 1] == 0)
-		result.digits.pop_back();
+	if (carry != 0) result += to_string(carry);
 
-	return result;
+	// remove '0' from the begin
+	while (result.size() > 1 && (char)result[result.size() - 1] == '0')
+		result.pop_back();
+
+	reverse(result.begin(), result.end());
+
+	return Number(result);
 }
 
 Number Number::operator-(Number secondNumber)
 {
-	// if left number < right number change them
-	if (digits.size() < secondNumber.digits.size())
-	{
-		Number temp;
-		for (int i = 0; i < digits.size(); i++)
-			temp.digits.push_back(digits[i]);
-
-		digits.clear();
-
-		for (int i = 0; i < secondNumber.digits.size(); i++)
-			digits.push_back(secondNumber.digits[i]);
-
-		secondNumber.digits.clear();
-
-		for (int i = 0; i < temp.digits.size(); i++)
-			secondNumber.digits.push_back(temp.digits[i]);
-	}
+	string result;
 
 	while (secondNumber.digits.size() < digits.size())
-		secondNumber.digits.push_back(0);
-
-	Number result;
-
-	while (result.digits.size() < digits.size())
-		result.digits.push_back(0);
+		secondNumber.digits.push_back('0');
 
 	int diff;
 	int carry = 0;
-	int i;
-
-	for (i = 0; i < digits.size(); i++)
+	for (int i = 0; i < digits.size(); i++)
 	{
-		diff = digits[i] - secondNumber.digits[i] - carry;
+		diff = digits[i] - '0' - (secondNumber.digits[i] - '0') - carry;
 		if (diff >= 0)
 		{
-			result.digits[i] = diff;
+			result += to_string(diff);
 			carry = 0;
 		}
 		else {
-			result.digits[i] = diff+BASE;
+			result += to_string(diff + BASE);
 			carry = (-diff) / 10 + 1;
 		}
 	}
 
 	// remove '0' from the begin
-	while (result.digits.size() > 1 && result.digits[result.digits.size() - 1] == 0)
-		result.digits.pop_back();
+	while (result.size() > 1 && (char)result[result.size() - 1] == '0')
+		result.pop_back();
 
-	return result;
+	reverse(result.begin(), result.end());
+
+	return Number(result);
 }
-
 
 void Number::print()
 {
 	for (int i = digits.size() - 1; i >= 0; i--)
 		cout << digits[i];
 	cout << "\n";
+}
+
+Number* Number::splitNumber()
+{
+	Number* result = new Number[2];
+
+	int n = getSize();
+
+	if (n == 1)
+	{
+		result[0].addDigit(0);
+		result[1].digits = digits;
+		return result;
+	}
+
+	result[1].digits = digits.substr(0, n / 2);
+	result[0].digits = digits.substr(n / 2, n - n / 2);
+
+	return result;
 }
