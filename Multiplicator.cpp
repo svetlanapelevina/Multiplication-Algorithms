@@ -64,6 +64,48 @@ double Multiplicator::gradeSchoolAlgorithmTime(Number number1, Number number2)
 	return (double)(clock() - start);
 }
 
+Number Multiplicator::divideAndConquer(Number number1, Number number2)
+{
+	int maxSize = max(number1.getSize(), number2.getSize());
+
+	if (number1.getSize() == 0) return Number(0);
+	if (number2.getSize() == 0) return Number(0);
+
+	if (maxSize == 1) return Number(number1.getDigit(0) * number2.getDigit(0));
+
+	Number* splitedNumber1 = number1.splitNumber();
+	Number* splitedNumber2 = number2.splitNumber();
+	Number a = splitedNumber1[0];
+	Number b = splitedNumber1[1];
+	Number c = splitedNumber2[0];
+	Number d = splitedNumber2[1];
+
+	Number ac = karatsubaAlgorithm(a, c);
+	Number bd = karatsubaAlgorithm(b, d);
+	Number ad = karatsubaAlgorithm(a, d);
+	Number bc = karatsubaAlgorithm(b, c);
+	Number ad_bc = ad + bc;
+
+	for (int i = 0; i < 2 * (maxSize / 2); i++)
+		ac.addDigitToIndex(0, 0);
+
+	for (int i = 0; i < maxSize / 2; i++)
+		ad_bc.addDigitToIndex(0, 0);
+
+	//(ac + bd + ad_bc).print();
+
+	return (ac + bd + ad_bc);
+}
+
+double Multiplicator::divideAndConquerTime(Number number1, Number number2)
+{
+	clock_t start = clock();
+
+	divideAndConquer(number1, number2);
+
+	return (double)(clock() - start);
+}
+
 Number Multiplicator::karatsubaAlgorithm(Number number1, Number number2)
 {
 	int maxSize = max(number1.getSize(), number2.getSize());
