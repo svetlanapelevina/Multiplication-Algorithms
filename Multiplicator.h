@@ -1,7 +1,6 @@
 #pragma once
 #include "Number.h"
-
-class Multiplicator
+static class Multiplicator
 {
 public:
 	static Number generateRandomNumber(int k);

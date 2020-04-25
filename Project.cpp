@@ -6,11 +6,9 @@
 vector<double*> performCalculation(int k);
 void outputCsv(vector<double*>);
 
-
 int main()
 {
-    vector<double*> results = performCalculation(50);
-    outputCsv(results);
+    outputCsv(performCalculation(500));
 }
 
 vector<double*> performCalculation(int k)
@@ -29,6 +27,7 @@ vector<double*> performCalculation(int k)
         }
         result.push_back(new double[3]{ time1 / 3, time2 / 3, time3 / 3 });
     }
+
     return result;
 }
 
@@ -36,10 +35,12 @@ void outputCsv(vector<double*> values)
 {
     ofstream file;
     file.open("results_of_algorithms2.csv");
-    file << "Index" << "," << "Grand School Algorithm" << "," << "Divide And Conquer Algorithm" << "," << "Karatsuba Algorithm" << "\n";
+    file << "Index" << "," << "Grade School Algorithm" << "," << "Divide And Conquer Algorithm" << "," << "Karatsuba Algorithm" << "\n";
+    
     for (int i = 0; i < values.size(); i++)
     {
         file << i + 1 << "," << values[i][0] << "," << values[i][1] << "," << values[i][2] << "\n";
     }
+
     file.close();
 }

@@ -6,20 +6,11 @@ using namespace std;
 
 Number::Number() {}
 
-Number::Number(string str)
+Number::Number(string line) 
 {
-	for (int i = str.length() - 1; i >= 0; i--)
+	for (int i = line.length() - 1; i >= 0; i--)
 	{
-		digits += str[i];
-	}
-}
-
-Number::Number(int num)
-{
-	while (num > 0)
-	{
-		digits += to_string(num % BASE);
-		num = num / BASE;
+		digits += line[i];
 	}
 }
 
@@ -63,10 +54,16 @@ Number Number::operator+(Number secondNumber)
 	int maxSize = max(secondNumber.digits.size(), digits.size());
 
 	while (secondNumber.digits.length() < maxSize)
+	{
 		secondNumber.addDigit(0);
+	}
+		
 
 	while (digits.size() < maxSize)
+	{
 		this->addDigit(0);
+	}
+		
 
 	int carry = 0;
 	for (int i = 0; i < maxSize; i++)
@@ -80,7 +77,10 @@ Number Number::operator+(Number secondNumber)
 
 	// remove '0' from the begin
 	while (result.size() > 1 && (char)result[result.size() - 1] == '0')
+	{
 		result.pop_back();
+	}
+		
 
 	reverse(result.begin(), result.end());
 
@@ -106,14 +106,16 @@ Number Number::operator-(Number secondNumber)
 		}
 		else {
 			result += to_string(diff + BASE);
-			carry = (-diff) / 10 + 1;
+			carry = (-diff) / BASE + 1;
 		}
 	}
 
 	// remove '0' from the begin
 	while (result.size() > 1 && (char)result[result.size() - 1] == '0')
+	{
 		result.pop_back();
-
+	}
+		
 	reverse(result.begin(), result.end());
 
 	return Number(result);
@@ -122,7 +124,9 @@ Number Number::operator-(Number secondNumber)
 void Number::print()
 {
 	for (int i = digits.size() - 1; i >= 0; i--)
+	{
 		cout << digits[i];
+	}
 	cout << "\n";
 }
 

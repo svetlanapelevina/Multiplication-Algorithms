@@ -12,7 +12,6 @@ protected:
 public:
 	static const int BASE = 10;
 	Number();
-	Number(int num);
 	Number(string str);
 	int getSize();
 	int getDigit(int index);

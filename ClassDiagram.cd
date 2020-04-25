@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="Multiplicator">
+    <Position X="0.5" Y="0.5" Width="4.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAgEAAAEAAAAAAAAAAAAAgAAAAAAABAIAA=</HashCode>
+      <FileName>Multiplicator.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Number">
+    <Position X="5.5" Y="0.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AQQAAAAAAIAAEAAAAEAAACAEAAABAAAAAEAgAAAAEAA=</HashCode>
+      <FileName>Number.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
